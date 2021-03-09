@@ -1,0 +1,56 @@
+<form ngNativeValidate
+#registerForm="ngForm"
+(ngSubmit)="register()"
+autocomplete="off">
+<h2 class="text-center text-primary">
+    Sign Up
+</h2>
+<hr>
+<div class="form-group">
+    <input type="text" 
+    required
+    class="form-control"
+    oninvalid="this.setCustomValidity('Please Enter your Username')"
+    oninput="this.setCustomValidity('')"
+    name="username"
+    [(ngModel)]="model.username"
+    placeholder="Username">
+</div>
+
+<!-- <div class="form-group">
+    <label>Who is your favorite user?</label>
+    <select class="form-control" required
+    oninvalid="this.setCustomValidity('Please select a username')"
+    oninput="this.setCustomValidity('')"
+    >
+        <option disabled selected value> -- select an username -- </option>
+        <option  *ngFor="let user of usersFromHomeComponet" [value]="user.id" >
+        {{user.userName}}
+        </option>
+    </select>
+</div> -->
+
+<div class="form-group">
+    <input type="password" 
+    oninvalid="this.setCustomValidity('Please Enter your Password')"
+    oninput="this.setCustomValidity('')"
+    required
+    class="form-control"
+    name="password"
+    [(ngModel)]="model.password"
+    placeholder="Password">
+</div>
+    <div class="form-group text-center">
+        <button 
+        type="submit"
+        class="btn btn-success mr-2">   
+            Register
+        </button>
+        <button 
+        type="button"
+        (click)="cancel()"
+        class="btn btn-danger mr-2">   
+            Cancel
+        </button>
+    </div>
+</form>
