@@ -1,0 +1,27 @@
+<div class="container" style="text-align: center;">
+    <div class="jumbotron">
+    <h1 class="display-3 text-primary">
+        Server Error
+    </h1>
+    <blockquote class="blockquote text-center">
+        <p class="mb-0">Please try refreshing the page once.</p>
+        <ng-container *ngIf="error?.error">
+        <footer class="blockquote-footer">Error Details<cite title="Source Title">
+                {{error.message}}
+        </cite></footer>
+        </ng-container>
+      </blockquote>
+    <hr class="my-4">
+    <ng-container *ngIf="(accountService.currentUser$ |async) as user">
+        <button class="btn btn-outline-primary btn-lg" routerLink="/members">
+            {{user.username | titlecase}}, Click here to go to members page
+        </button>
+    </ng-container>
+
+    <ng-container *ngIf="!(accountService.currentUser$ |async)">
+        <button class="btn btn-outline-primary btn-lg" routerLink="/">
+            Go to Home Page
+        </button>
+    </ng-container>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="container" style="text-align: center;">
+    <div class="jumbotron">
+    <h1 class="display-3 text-primary">
+        Not Found
+    </h1>
+    <hr class="my-4">
+    <ng-container *ngIf="(accountService.currentUser$ |async) as user">
+        <button class="btn btn-outline-primary btn-lg" routerLink="/members">
+            {{user.username | titlecase}}, Click here to go to members page
+        </button>
+    </ng-container>
+
+    <ng-container *ngIf="!(accountService.currentUser$ |async)">
+        <button class="btn btn-outline-primary btn-lg" routerLink="/">
+            Go to Home Page
+        </button>
+    </ng-container>
+    </div>
+</div>
