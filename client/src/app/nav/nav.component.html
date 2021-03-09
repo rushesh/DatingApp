@@ -1,47 +1,33 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
     <div class="container">
-        
-    <a class="navbar-brand" href="#">Dating App</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" routerLink="/"  routerLinkActive="active">Dating App</a>
+    <button class="navbar-toggler" type="button"
+    data-toggle="collapse" 
+    data-target="#navbarCollapse" aria-controls="navbarCollapse" 
+    aria-expanded="false" 
+    aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul 
-      *ngIf="accountService.currentUser$ | async"
-      class="navbar-nav mr-auto">
+
+    <div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content: flex-end;">
+      <ul class="navbar-nav mr-auto">
+        <ng-container *ngIf="(accountService.currentUser$ | async) as user">
         <li class="nav-item">
-          <a class="nav-link" href="#">Matches</a>
+          <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Lists</a>
+          <a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Messages</a>
+          <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
         </li>
+        </ng-container>
       </ul>
 
-      <form *ngIf="!(accountService.currentUser$ | async)" ngNativeValidate
-       #loginForm="ngForm" class="form-inline mt-2 mt-md-0 " (ngSubmit)="login()" autocomplete="off">
-        
-       <input class="form-control mr-sm-2 is-valid"
-        name="username"
-        required
-        [(ngModel)]="model.username"
-        type="text" placeholder="Username">
-        <div class="invalid-feedback">
-            Please choose a username.
-          </div>
-        <input class="form-control mr-sm-2 is-valid"
-        name="password" [(ngModel)]="model.password"
-        required
-        type="password" placeholder="Password">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-      </form>
-
-      <div class="btn-group" dropdown *ngIf="accountService.currentUser$ | async">
-        <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle"
+      <div class="btn-group" dropdown *ngIf="(accountService.currentUser$ | async) as user">
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-info dropdown-toggle"
                 aria-controls="dropdown-basic">
-          Welcome User <span class="caret"></span>
+          Welcome {{user.username| titlecase}} <span class="caret"></span>
         </button>
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
             role="menu" aria-labelledby="button-basic">
@@ -51,7 +37,26 @@
           </li>
         </ul>
       </div>
-     
+
+      <form *ngIf="!(accountService.currentUser$ | async)" ngNativeValidate
+       #loginForm="ngForm" class="form-inline mt-2 mt-md-0 " (ngSubmit)="login()" autocomplete="off">
+       
+       <input class="form-control mr-sm-2 is-valid "
+        name="username"
+        required
+        oninvalid="this.setCustomValidity('Please Enter your Username')"
+        oninput="this.setCustomValidity('')"
+        [(ngModel)]="model.username"
+        type="text" placeholder="Username">
+
+        <input class="form-control mr-sm-2 is-valid"
+        oninvalid="this.setCustomValidity('Please Enter your Password')"
+        oninput="this.setCustomValidity('')"
+        name="password" [(ngModel)]="model.password"
+        required
+        type="password" placeholder="Password">
+        <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+      </form>
     </div>
     </div>
   </nav>

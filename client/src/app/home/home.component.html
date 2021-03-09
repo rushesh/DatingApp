@@ -7,7 +7,7 @@
             Come on in to view your matches... all you need to do is sign up!
         </p>
         <div class="text-center">
-            <button 
+            <button *ngIf="!(accountService.currentUser$ | async)"
             (click)="registerToggle()"
             class="btn btn-primary btn-lg mr-2">
                 Register
