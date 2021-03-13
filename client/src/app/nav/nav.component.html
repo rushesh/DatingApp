@@ -27,19 +27,23 @@
         </li>
       </ul>
 
-      <div class="btn-group" dropdown *ngIf="(accountService.currentUser$ | async) as user">
-        <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle"
-                aria-controls="dropdown-basic">
-          Welcome {{user.username| titlecase}} <span class="caret"></span>
-        </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-            role="menu" aria-labelledby="button-basic">
-          <li role="menuitem"><a class="dropdown-item" routerLink="/member/edit" routerLinkActive="active" href="#">Edit Profile</a></li>
-          <li class="divider dropdown-divider"></li>
-          <li role="menuitem"><a class="dropdown-item" href="#" (click)="logout()">Logout</a>
-          </li>
-        </ul>
-      </div>
+      <ng-container *ngIf="(accountService.currentUser$ | async) as user">
+        <img src="{{user.photoUrl}}" alt="{{user.username}}">
+        <div class="btn-group ml-1" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle"
+                  aria-controls="dropdown-basic">
+            Welcome {{user.username| titlecase}} <span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-basic">
+            <li role="menuitem"><a class="dropdown-item" routerLink="/member/edit" routerLinkActive="active" href="#">Edit Profile</a></li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem"><a class="dropdown-item" href="#" (click)="logout()">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+      
 
       <form *ngIf="!(accountService.currentUser$ | async)" ngNativeValidate
        #loginForm="ngForm" class="form-inline mt-2 mt-md-0 " (ngSubmit)="login()" autocomplete="off">

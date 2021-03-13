@@ -26,7 +26,7 @@ export class NavComponent implements OnInit {
 
   login(){
     let user = {
-      username:this.model.username.trim(),
+      username:this.model.username.toLowerCase().trim(),
       password:this.model.password
     }
     this.model = {};
