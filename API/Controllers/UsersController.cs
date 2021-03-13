@@ -23,7 +23,7 @@ namespace API.Controllers
 
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
