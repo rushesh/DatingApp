@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
@@ -10,5 +11,14 @@ namespace API.DTOs
         [StringLength(20,MinimumLength=8,
         ErrorMessage="Should be between 8-20 characters")]
         public string Password { get; set; }
+        [Required]
+        public string knownAs { get; set; }
+        [Required]
+        public string Gender { get; set; }
+        [Required]
+        public DateTime DateOfBirth { get; set; }
+        [Required]
+        public string Location {get; set;}
+        
     }
 }

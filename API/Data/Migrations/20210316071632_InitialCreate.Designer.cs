@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210310044836_ExtendedUserEntity")]
-    partial class ExtendedUserEntity
+    [Migration("20210316071632_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,12 +24,6 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("City")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Country")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
@@ -39,8 +33,8 @@ namespace API.Data.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Interests")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Interests")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Introduction")
                         .HasColumnType("TEXT");
@@ -49,6 +43,9 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastActive")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Location")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LookingFor")

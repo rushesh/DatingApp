@@ -28,7 +28,7 @@
       </ul>
 
       <ng-container *ngIf="(accountService.currentUser$ | async) as user">
-        <img src="{{user.photoUrl}}" alt="{{user.username}}">
+        <img src="{{user.photoUrl || './assets/user.png'}}" alt="{{user.username}}">
         <div class="btn-group ml-1" dropdown>
           <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle"
                   aria-controls="dropdown-basic">
@@ -45,24 +45,27 @@
       </ng-container>
       
 
-      <form *ngIf="!(accountService.currentUser$ | async)" ngNativeValidate
-       #loginForm="ngForm" class="form-inline mt-2 mt-md-0 " (ngSubmit)="login()" autocomplete="off">
+      <form 
+      *ngIf="!(accountService.currentUser$ | async)" 
+      [formGroup]="loginForm"
+      class="form-inline mt-2 mt-md-0 " (ngSubmit)="loginForm.valid && login()" autocomplete="off">
        
-       <input class="form-control mr-sm-2 is-valid "
-        name="username"
-        required
-        oninvalid="this.setCustomValidity('Please Enter your Username')"
-        oninput="this.setCustomValidity('')"
-        [(ngModel)]="model.username"
+       <input class="form-control mr-sm-2"
+        formControlName="username"
+        [class.is-invalid]="loginForm.get('username')!.errors 
+        && loginForm.get('username')!.touched"
         type="text" placeholder="Username">
-
-        <input class="form-control mr-sm-2 is-valid"
-        oninvalid="this.setCustomValidity('Please Enter your Password')"
-        oninput="this.setCustomValidity('')"
-        name="password" [(ngModel)]="model.password"
-        required
+        
+        <input class="form-control mr-sm-2"
+        formControlName="password"
+        [class.is-invalid]="loginForm.get('password')!.errors 
+        && loginForm.get('password')!.touched"
         type="password" placeholder="Password">
-        <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+        
+        <button 
+        class="btn btn-warning my-2 my-sm-0" 
+        [disabled]="!loginForm.valid"
+        type="submit">Login</button>
       </form>
     </div>
     </div>

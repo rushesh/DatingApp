@@ -1,56 +1,164 @@
-<form ngNativeValidate
-#registerForm="ngForm"
-(ngSubmit)="register()"
-autocomplete="off">
-<h2 class="text-center text-primary">
-    Sign Up
-</h2>
-<hr>
-<div class="form-group">
-    <input type="text" 
-    required
-    class="form-control"
-    oninvalid="this.setCustomValidity('Please Enter your Username')"
-    oninput="this.setCustomValidity('')"
-    name="username"
-    [(ngModel)]="model.username"
-    placeholder="Username">
-</div>
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="isLocationValid && registerForm!.valid && register()"
+  autocomplete="off"
+>
+  <h2 class="text-center text-primary">Sign Up</h2>
+  <hr />
+  <div class="form-group">
+    <input
+      [class.is-invalid]="
+        registerForm.get('username')!.errors &&
+        registerForm.get('username')!.touched
+      "
+      type="text"
+      class="form-control"
+      formControlName="username"
+      placeholder="Username"
+    />
 
-<!-- <div class="form-group">
-    <label>Who is your favorite user?</label>
-    <select class="form-control" required
-    oninvalid="this.setCustomValidity('Please select a username')"
-    oninput="this.setCustomValidity('')"
-    >
-        <option disabled selected value> -- select an username -- </option>
-        <option  *ngFor="let user of usersFromHomeComponet" [value]="user.id" >
-        {{user.userName}}
-        </option>
-    </select>
-</div> -->
+    <div class="invalid-feedback">Please enter a username.</div>
+  </div>
 
-<div class="form-group">
-    <input type="password" 
-    oninvalid="this.setCustomValidity('Please Enter your Password')"
-    oninput="this.setCustomValidity('')"
-    required
-    class="form-control"
-    name="password"
-    [(ngModel)]="model.password"
-    placeholder="Password">
-</div>
-    <div class="form-group text-center">
-        <button 
-        type="submit"
-        class="btn btn-success mr-2">   
-            Register
-        </button>
-        <button 
-        type="button"
-        (click)="cancel()"
-        class="btn btn-danger mr-2">   
-            Cancel
-        </button>
+  <div class="form-group">
+    <input
+      [class.is-invalid]="
+        registerForm.get('knownAs')!.errors &&
+        registerForm.get('knownAs')!.touched
+      "
+      type="text"
+      class="form-control"
+      formControlName="knownAs"
+      placeholder="Know As"
+    />
+
+    <div class="invalid-feedback">Please enter your know as name.</div>
+  </div>
+
+  <div class="form-group">
+    <input
+      [class.is-invalid]="
+        registerForm.get('location')!.errors &&
+        registerForm.get('location')!.touched
+      "
+      formControlName="location"
+      placeholder="Location"
+      (change)="checkLocationValidity()"
+      (keyup)="checkLocationValidity()"
+      [isAnimated]="true"
+      [adaptivePosition]="true"
+      (typeaheadOnSelect)="checkLocationValidity()"
+      [dropup]="true"
+      [typeahead]="accountService.locations"
+      (typeaheadNoResults)="typeaheadNoResults($event)"
+      class="form-control"
+    />
+    <div class="invalid-feedback" *ngIf="noResult">
+      Please enter a valid location name from options.
     </div>
+    <div class="invalid-feedback">Please enter a valid location name.</div>
+  </div>
+
+  <div class="form-group">
+    <input
+      class="form-control primary"
+      [class.is-invalid]="
+        registerForm.get('dateOfBirth')!.errors &&
+        registerForm.get('dateOfBirth')!.touched
+      "
+      placeholder="Date of Birth"
+      bsDatepicker
+      formControlName="dateOfBirth"
+      [bsConfig]="{ containerClass: 'theme-red' }"
+      [maxDate]="maxDate"
+    />
+    <div class="invalid-feedback">Please enter a valid date of birth.</div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label p-2">I am a:</label>
+    <label class="radio-inline p-2">
+      <input type="radio" value="male" formControlName="gender" />
+      Male
+    </label>
+
+    <label class="radio-inline">
+      <input type="radio" value="female" formControlName="gender" />
+      Female
+    </label>
+  </div>
+
+  <div class="form-group">
+    <input
+      [class.is-invalid]="
+        registerForm.get('password')!.errors &&
+        registerForm.get('password')!.touched
+      "
+      type="password"
+      formControlName="password"
+      class="form-control"
+      placeholder="Password"
+    />
+    <div
+      *ngIf="registerForm.get('password')!.hasError('required')"
+      class="invalid-feedback"
+    >
+      Please enter a password.
+    </div>
+    <div
+      *ngIf="registerForm.get('password')!.hasError('minlength')"
+      class="invalid-feedback"
+    >
+      Password should be minimum of 8 characters.
+    </div>
+    <div
+      *ngIf="registerForm.get('password')!.hasError('maxlength')"
+      class="invalid-feedback"
+    >
+      Passowrd can contain maximum of 20 characters.
+    </div>
+  </div>
+  <div class="form-group">
+    <input
+      [class.is-invalid]="
+        registerForm.get('confirmPassword')!.errors &&
+        registerForm.get('confirmPassword')!.touched
+      "
+      type="password"
+      formControlName="confirmPassword"
+      class="form-control"
+      placeholder="Confirm Password"
+    />
+    <div
+      *ngIf="registerForm.get('confirmPassword')!.hasError('required')"
+      class="invalid-feedback"
+    >
+      Please enter a confirm password.
+    </div>
+    <div
+      *ngIf="registerForm.get('confirmPassword')!.hasError('isMatching')"
+      class="invalid-feedback"
+    >
+      Confirm password doesnot match with password.
+    </div>
+  </div>
+  <div *ngIf="validationErrors.length > 0" class="row mt-5">
+    <ul class="text-danger">
+      <li *ngFor="let error of validationErrors">
+        {{ error }}
+      </li>
+    </ul>
+  </div>
+  <div class="form-group text-center">
+    <button
+      type="submit"
+      [disabled]="!(isLocationValid && registerForm.valid)"
+      class="btn btn-success mr-2"
+    >
+      Register
+    </button>
+    <button type="button" (click)="cancel()" class="btn btn-danger mr-2">
+      Cancel
+    </button>
+  </div>
 </form>

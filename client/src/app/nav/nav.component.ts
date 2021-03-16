@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertService } from 'ngx-alerts';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
@@ -11,34 +13,39 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  model:any = {};
+
+  loginForm!: FormGroup;
   // loggedIn:boolean = false;
   
   // loggedIn:boolean = false;
   // currentUser$: Observable<User> | undefined;
 
   constructor(public accountService:AccountService, private router: Router, 
-    private toastr:ToastrService) { }
+    private toastr:ToastrService, private fb: FormBuilder, private alertService: AlertService) { }
 
   ngOnInit(): void {
     // this.currentUser$ = this.accountService.currentUser$;
+    this.initializeLoginForm();
   }
 
+  initializeLoginForm(){
+      this.loginForm = this.fb.group({
+        username: ['',Validators.required],
+        password:['',[Validators.required,Validators.minLength(8),Validators.maxLength(20)]]
+      });
+  }
   login(){
-    let user = {
-      username:this.model.username.toLowerCase().trim(),
-      password:this.model.password
-    }
-    this.model = {};
-    console.log(user);
-    this.accountService.login(user).subscribe((response)=>{
+    
+    this.accountService.login(this.loginForm.value).subscribe((response)=>{
       console.log(response);
       // this.loggedIn = true;
       this.router.navigateByUrl('/members');
+      this.alertService.success('Logged in successfully!');
     },
     (error: any)=>{
       console.log(error);
       // this.toastr.error(error.error);
+      this.alertService.danger(error.error);
     })
   }
 

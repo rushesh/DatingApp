@@ -13,7 +13,7 @@ export class PreventUnsafeChangesGuard implements CanDeactivate<unknown> {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       
-      if(component.editForm.dirty){
+      if(component.editUserForm.dirty){
         return confirm(`Are you sure you want to continue?
         Any unsaved changes will be lost.`)
       }

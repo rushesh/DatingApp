@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS, JsonpInterceptor } from '@angular/
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -22,6 +22,11 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { TextInputsComponent } from './_forms/text-inputs/text-inputs.component';
+import { AlertModule } from 'ngx-alerts';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +42,8 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     ServerErrorComponent,
     MemberCardComponent,
     MemberEditComponent,
-    PhotoEditorComponent
+    PhotoEditorComponent,
+    TextInputsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +51,11 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    AlertModule.forRoot({maxMessages: 5, timeout: 5000, positionX: 'right',positionY:'top'}),
+    BsDatepickerModule.forRoot(),
+    NgSelectModule
   ],
   providers: [
     {provide : HTTP_INTERCEPTORS, useClass:ErrorInterceptor ,multi:true},

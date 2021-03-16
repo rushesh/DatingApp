@@ -9,6 +9,10 @@ import { User } from '../_models/user';
 })
 export class AccountService {
 
+  locations = [
+    "alaska", "germany", "spain"
+];
+
   baseUrl = environment.baseURL;
   constructor(private http:HttpClient) { }
 
